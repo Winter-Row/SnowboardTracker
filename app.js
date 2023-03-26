@@ -7,13 +7,17 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 //importing config file
 var config = require('./config/global');
+//importing user model
+var User = require('./models/user');
+//importing passport and sessions
+const passport = require('passport');
+const session = require('express-session');
 
 var hbs = require('hbs');
 
 var indexRouter = require('./routes/index');
 var TripRouter = require('./routes/trips');
 
-var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -27,10 +31,27 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//configure session
+app.use(session({
+  secret: 'snowboardTracker2023',
+  resave: false,
+  saveUninitialized: false
+}));
+
+//passport initialization
+app.use(passport.initialize());//allows passport to be configured with strategies
+app.use(passport.session());//handle session
+//create and use local strategy
+passport.use(User.createStrategy());
+
+//configure user object serialization/deserialization
+passport.serializeUser(User.serializeUser()); // serializeUser method comes from plm package
+passport.deserializeUser(User.deserializeUser());
+
+//routers
 app.use('/', indexRouter);
 app.use('/trips', TripRouter);
 
-app.use('/users', usersRouter);
 
 //setting up database connection
 mongoose.connect(config.db,{ useNewUrlParser: true, useUnifiedTopology: true })

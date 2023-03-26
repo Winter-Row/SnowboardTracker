@@ -14,7 +14,8 @@ router.get('/', function(req, res, next) {
     }else{
         res.render('trips/index', { 
             title: "Trips", 
-            dataset: trips
+            dataset: trips,
+            user: req.user
         });
     }
   })
@@ -22,7 +23,7 @@ router.get('/', function(req, res, next) {
 
 //GET /trips/add
 router.get('/add', function(req, res, next) {
-    res.render('trips/add', { title: 'Add a recent trip' });
+    res.render('trips/add', { title: 'Add a recent trip', user: req.user });
 });
 
 //POST /trips/add
@@ -61,7 +62,7 @@ router.get('/edit/:_id',(req,res,next)=>{
         if(err){
             console.log(err);
         }else{
-            res.render('trips/edit', {title: 'Edit a trip', trip: trip});
+            res.render('trips/edit', {title: 'Edit a trip', trip: trip, user: req.user});
         }
     });
 });
