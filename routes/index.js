@@ -41,10 +41,17 @@ router.post('/register',(req,res,next)=>{
         console.log(err);
         res.redirect('/register');
       }else{
-        req.login(newUser, (err) => {res.redirect('/trips');});
+        req.login(newUser, (err) => {res.redirect('/login');});
       }
     }
   );
+});
+
+//GET /logout
+router.get('/logout',(req,res,next)=>{
+  req.logout(function(err){
+    res.redirect('/login');// user gets logged out, session is cleared, and user is redirected to login
+  });
 });
 
 module.exports = router;

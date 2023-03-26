@@ -8,13 +8,17 @@
             <li class="list-group-item">Date Visited: {{toShortDate this.date}}</li>
             <li class="list-group-item">Time Spent: {{this.timeSpent}} Hours</li>
             <li class="list-group-item">Money Spent: {{this.spendings}}$</li>
+            {{#if ../user}}
             <li class="list-group-item">
                 <a class="btn btn-danger mt-2" onclick="confirmDeletion()" href="/trips/delete/{{this._id}}">Delete</a>
                 <a class="btn btn-info mt-2" href="/trips/edit/{{this._id}}">Edit</a>
             </li>
+            {{/if}}
         </ul>
         </div>
         {{/each}}
     </div>
+    {{#if user}}
     <a class="btn btn-success mt-2" href="/trips/add">Add a trip</a>
+    {{/if}}
 </div>
