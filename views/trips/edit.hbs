@@ -1,0 +1,20 @@
+<h1>edit your trip!</h1>
+<form method="POST">
+    <div class="form-group">
+        <label for="formGroupExampleInput">Resort Name</label>
+        <input type="text" value="{{trip.resortName}}" class="form-control" name="resortName" id="resortName" placeholder="resort name">
+    </div>
+    <div class="form-group">
+        <label for="formGroupExampleInput2">Date visited</label>
+        <input type="date" value="{{trip.date}}" class="form-control" name="date" id="date" placeholder="22/02/12">
+    </div>
+    <div class="form-group">
+        <label for="formGroupExampleInput2">Time spent in hours</label>
+        <input type="number" value="{{trip.timeSpent}}" class="form-control" name="timeSpent" id="timeSpent" placeholder="5 hours">
+    </div>
+    <div class="form-group">
+        <label for="formGroupExampleInput2">spending's in dollars</label>
+        <input type="number" value="{{trip.spendings}}"  class="form-control" name="spendings" id="spendings" placeholder="100$">
+    </div>
+    <button class="btn btn-primary mb-2">Done</button>
+</form>
