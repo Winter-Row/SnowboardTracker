@@ -12,7 +12,8 @@ var User = require('./models/user');
 //importing passport and sessions
 const passport = require('passport');
 const session = require('express-session');
-
+//Importing github passport for github login
+const githubStrategy = require('passport-github2').Strategy;
 var hbs = require('hbs');
 
 var indexRouter = require('./routes/index');
@@ -43,6 +44,33 @@ app.use(passport.initialize());//allows passport to be configured with strategie
 app.use(passport.session());//handle session
 //create and use local strategy
 passport.use(User.createStrategy());
+
+//github strategy
+passport.use(new githubStrategy(
+  {
+    clientID: config.github.clientId,
+    clientSecret: config.github.clientSecret,
+    callbackURL: config.github.callbackUrl
+  },
+  async(accessToken, refreshToken, profile, done) => {
+    //search user in my database
+    const user = await User.findOne({ oauthId: profile.id});
+    // if found do nothing just continue
+    if(user){
+      return done(null, user);
+    }else{
+      // if not then create a new user in my database
+      const newUser = new User({
+        username: profile.username,
+        oauthId: profile.id,
+        oauthProvider: 'GitHub',
+        created: Date.now()
+      });
+      const savedUser = await newUser.save();
+      return done(null, savedUser);
+    }
+  }
+))
 
 //configure user object serialization/deserialization
 passport.serializeUser(User.serializeUser()); // serializeUser method comes from plm package

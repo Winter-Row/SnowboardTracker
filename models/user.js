@@ -8,6 +8,15 @@ const schemaDefinitionObj = {
     },
     password: {
         type: String
+    },
+    oauthId:{
+        type: String
+    },
+    oauthProvider:{
+        type: String
+    },
+    created: {
+        type: Date
     }
 }
 

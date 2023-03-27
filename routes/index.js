@@ -7,7 +7,7 @@ const passport = require('passport');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', user: req.user });
+  res.render('index', { title: 'Snowboard Trip Tracker', user: req.user });
 });
 
 /* GET login page */
@@ -53,5 +53,16 @@ router.get('/logout',(req,res,next)=>{
     res.redirect('/login');// user gets logged out, session is cleared, and user is redirected to login
   });
 });
+
+//GET /github
+router.get('/github',passport.authenticate('github', { scope: ['user.email']}));
+
+//GET /github/callback
+router.get('/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login'}),//unsuccessful login
+  (req, res, next) =>{
+    res.redirect('/trips');//successful login
+  }
+)
 
 module.exports = router;
